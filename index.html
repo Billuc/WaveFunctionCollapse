@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <meta
+      http-equiv="X-Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <title>Wave Function Collapse</title>
+  </head>
+  <body>
+    <h1>Wave Function Collapse</h1>
+    <button id="run-iteration-btn">Run Iteration</button>
+
+    <script src="./models/authorization.js"></script>
+    <script src="./models/cell.js"></script>
+    <script src="./models/orientation.js"></script>
+    <script src="./models/rule.js"></script>
+    <script src="./models/tile.js"></script>
+    <script src="./models/rules/neighborRule.js"></script>
+    <script src="./utils/helpers.js"></script>
+    <script src="./utils/display.js"></script>
+    <script src="./utils/waveFunctionCollapse.js"></script>
+  </body>
+</html>

@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "My own implementation of the wave function collapse algorithm",
   "main": "main.js",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Billuc/WaveFunctionCollapse.git"
+  },
   "scripts": {
+    "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Billuc",
