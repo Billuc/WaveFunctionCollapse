@@ -19,10 +19,10 @@
 
         for (let subRule of subRules) {
             if (tileVariant.tile === subRule.tile1) {
-                authorized.push(this.createAuthorization(subRule.sideTile1, subRule.sideTile2, tileVariant));
+                authorized.push(this.createAuthorization(subRule.sideTile1, subRule.sideTile2, subRule.tile2, tileVariant));
             }
             if (tileVariant.tile === subRule.tile2) {
-                authorized.push(this.createAuthorization(subRule.sideTile2, subRule.sideTile1, tileVariant));
+                authorized.push(this.createAuthorization(subRule.sideTile2, subRule.sideTile1, subRule.tile1, tileVariant));
             }
         }
 
@@ -59,7 +59,7 @@
         return tile === this.tile1 || tile === this.tile2;
     }
 
-    createAuthorization(side1, side2, tileVariant) {
+    createAuthorization(side1, side2, authorizedTile, tileVariant) {
         let orientation = side1;
         let tileVariantOrientation = (6 + side1 - side2) % 4;
 
@@ -68,10 +68,10 @@
             tileVariantOrientation = rotateOrientation(tileVariantOrientation);
         }
 
-        if (this.tile2.variants.findIndex(v => v.orientation == tileVariantOrientation) == -1) 
+        if (authorizedTile.variants.findIndex(v => v.orientation == tileVariantOrientation) == -1) 
             return null;
 
-        let authorizedTileVariant = new TileVariant(this.tile2, null, tileVariantOrientation);
+        let authorizedTileVariant = new TileVariant(authorizedTile, null, tileVariantOrientation);
         return new Authorization(orientation, authorizedTileVariant);
     }
 }

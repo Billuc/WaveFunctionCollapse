@@ -2,15 +2,14 @@ const GRID_WIDTH = 9;
 const GRID_HEIGHT = 9;
 
 const TILES = [
-    new Tile("Tile1", [TileSymmetry.None], 1, TileDisplayTypes.Value, "_"),
-    new Tile("Tile2", [TileSymmetry.None], 1, TileDisplayTypes.Value, "o"),
-    new Tile("Tile3", [TileSymmetry.None], 1, TileDisplayTypes.Value, "N")
+    new Tile("Water", [TileSymmetry.None], 1, TileDisplayTypes.Image, "./assets/water.png"),
+    new Tile("Sand", [TileSymmetry.None], 1, TileDisplayTypes.Image, "./assets/sand.png"),
+    new Tile("Forest", [TileSymmetry.None], 1, TileDisplayTypes.Image, "./assets/forest.png")
 ];
 
 const RULES = [
     new NeighborRule(TILES[0], Orientation.All, TILES[0], Orientation.All),
     new NeighborRule(TILES[0], Orientation.All, TILES[1], Orientation.All),
-    new NeighborRule(TILES[1], Orientation.All, TILES[1], Orientation.All),
     new NeighborRule(TILES[1], Orientation.All, TILES[2], Orientation.All),
     new NeighborRule(TILES[2], Orientation.All, TILES[2], Orientation.All)
 ];
@@ -88,9 +87,20 @@ function runIteration() {
     display(GRID);
 }
 
+async function runComplete() {
+    setup();
+    display(GRID);
+
+    while (!checkCompleted()) {
+        runIteration();
+        await delay(1000);
+    }
+}
+
 
 setup();
 setupDisplay(GRID_WIDTH, GRID_HEIGHT);
 display(GRID);
 
 document.getElementById("run-iteration-btn").addEventListener("click", runIteration);
+document.getElementById("run-complete-btn").addEventListener("click", runComplete);

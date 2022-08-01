@@ -24,6 +24,10 @@ class Tile {
 
         return variants;
     }
+
+    equals(other) {
+        return this.name == other.name;
+    }
 }
 
 class TileVariant {
@@ -41,10 +45,12 @@ class TileVariant {
                 this.authorized = this.authorized.concat(rule.generateAuthorized(this));
             }
         }
+
+        this.authorized = this.authorized.filter((a, i) => i == this.authorized.findIndex(auth => a.equals(auth)));
     }
 
     equals(other) {
-        return this.tile == other.tile &&
+        return this.tile.equals(other.tile) &&
             this.reflection == other.reflection &&
             this.orientation == other.orientation;
     }
