@@ -1,27 +1,18 @@
-const GRID_WIDTH = 9;
-const GRID_HEIGHT = 9;
+const GRID_WIDTH = 16;
+const GRID_HEIGHT = 16;
 
-const TILES = [
-    new Tile("Water", [TileSymmetry.None], 1, TileDisplayTypes.Image, "./assets/water.png"),
-    new Tile("Sand", [TileSymmetry.None], 1, TileDisplayTypes.Image, "./assets/sand.png"),
-    new Tile("Forest", [TileSymmetry.None], 1, TileDisplayTypes.Image, "./assets/forest.png")
-];
-
-const RULES = [
-    new NeighborRule(TILES[0], Orientation.All, TILES[0], Orientation.All),
-    new NeighborRule(TILES[0], Orientation.All, TILES[1], Orientation.All),
-    new NeighborRule(TILES[1], Orientation.All, TILES[2], Orientation.All),
-    new NeighborRule(TILES[2], Orientation.All, TILES[2], Orientation.All)
-];
+const sets = [new PipeSet()];
 
 const GRID = [];
 
 
 
 function setup() {
-    const variants = TILES.flatMap(t => t.variants);
+    let set = random(sets);
+
+    const variants = set.tiles().flatMap(t => t.variants);
     for (let i = 0; i < variants.length; i++) {
-        variants[i].generateAuthorized(RULES);
+        variants[i].generateAuthorized(set.rules());
     }
     
     for (let i = 0; i < GRID_WIDTH * GRID_HEIGHT; i++) {
@@ -81,7 +72,7 @@ function runIteration() {
     if (cellToCollapse.options.length == 0) backTrack();
 
     // Collapsing & modify options accordingly
-    cellToCollapse.tileVariant = random(cellToCollapse.options);
+    cellToCollapse.tileVariant = cellToCollapse.pickRandomOption();
     reduceOptions(cellToCollapse.index, cellToCollapse.tileVariant);
 
     display(GRID);
@@ -93,7 +84,7 @@ async function runComplete() {
 
     while (!checkCompleted()) {
         runIteration();
-        await delay(1000);
+        await delay(50);
     }
 }
 

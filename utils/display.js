@@ -29,6 +29,54 @@ async function getTileImage(tileName, displayValue) {
     return img;
 }
 
+function drawWithRotation(image, x, y, rotation) {
+    // let rotatedX, rotatedY;
+
+    // switch (rotation) {
+    //     case 1: 
+    //         rotatedX = y;
+    //         rotatedY = GridWidth - x - 1;
+    //         break;
+    //     case 2:
+    //         rotatedX = GridWidth - x - 1;
+    //         rotatedY = GridHeight - y - 1;
+    //         break;
+    //     case 3:
+    //         rotatedX = GridHeight - y - 1;
+    //         rotatedY = x;
+    //         break;
+    //     default:
+    //         rotatedX = x;
+    //         rotatedY = y;
+    // }
+
+    canvasContext.save();
+    // canvasContext.translate(CanvasWidth / 2 - 1, CanvasHeight / 2 - 1);
+    // canvasContext.rotate(rotation * Math.PI / 2);
+    // canvasContext.translate(-CanvasWidth / 2 + 1, -CanvasHeight / 2 + 1);
+
+
+    // canvasContext.drawImage(
+    //     image,
+    //     rotatedX * TileWidth,
+    //     rotatedY * TileHeight,
+    //     TileWidth,
+    //     TileHeight
+    // );
+
+    canvasContext.setTransform(1, 0, 0, 1, (x + 0.5) * TileWidth, (y + 0.5) * TileHeight);
+    canvasContext.rotate(rotation * Math.PI / 2);
+    canvasContext.drawImage(
+        image, 
+        -TileWidth/2,
+        -TileHeight/2,
+        TileWidth,
+        TileHeight
+    );
+
+    canvasContext.restore();
+}
+
 function displayTile(tileVariant, x, y) {
     var tile = tileVariant.tile;
 
@@ -42,15 +90,7 @@ function displayTile(tileVariant, x, y) {
     }
     else if (tile.displayType == TileDisplayTypes.Image) {
         getTileImage(tile.name, tile.displayValue)
-            .then(img => {
-                canvasContext.drawImage(
-                    img,
-                    x * TileWidth,
-                    y * TileHeight,
-                    TileWidth,
-                    TileHeight
-                )
-            })
+            .then(img => drawWithRotation(img, x, y, tileVariant.orientation));
     }
 }
 
@@ -64,7 +104,7 @@ function displayEntropy(entropy, x, y) {
 }
 
 function displayCell(cell, x, y) {
-    displayEntropy(cell.entropy, x, y);
+    // displayEntropy(Math.round(10 * cell.entropy) / 10, x, y);
     
     if (!cell.tileVariant) return;
     displayTile(cell.tileVariant, x, y);
